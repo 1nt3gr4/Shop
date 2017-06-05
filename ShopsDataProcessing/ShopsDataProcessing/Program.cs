@@ -10,6 +10,8 @@ namespace ShopsDataProcessing
     {
         static void Main(string[] args)
         {
+            IProcess processData = new Processing();
+            processData.Process();
         }
     }
 }

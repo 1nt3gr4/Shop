@@ -9,6 +9,7 @@ namespace ShopsDataProcessing
         List<Price> Prices { get; set; }
         List<Good> Goods { get; set; }
         void Read(string shopsPath, string pricesPath, string goodsPath);
+
     }
 
     public class Shop
@@ -81,7 +82,7 @@ namespace ShopsDataProcessing
                     buffer.Add(sr.ReadLine());
 
             foreach (string s in buffer)
-                Shops.Add(new Shop(s.Split(' ')[0], s.Split(' ')[1], s.Split(' ')[2]));
+                Shops.Add(new Shop(s.Split(';')[0], s.Split(';')[1], s.Split(';')[2]));
         }
 
         private void ReadPrices(string pricesPath)
@@ -92,7 +93,7 @@ namespace ShopsDataProcessing
                     buffer.Add(sr.ReadLine());
 
             foreach (string s in buffer)
-                Prices.Add(new Price(s.Split(' ')[0], s.Split(' ')[1], s.Split(' ')[2], s.Split(' ')[3]));
+                Prices.Add(new Price(s.Split(';')[0], s.Split(';')[1], s.Split(';')[2], s.Split(';')[3]));
         }
 
         private void ReadGoods(string goodsPath)
@@ -103,7 +104,7 @@ namespace ShopsDataProcessing
                     buffer.Add(sr.ReadLine());
 
             foreach (string s in buffer)
-                Prices.Add(new Price(s.Split(' ')[0], s.Split(' ')[1], s.Split(' ')[2], s.Split(' ')[3]));
+                Goods.Add(new Good(s.Split(';')[0], s.Split(';')[1], s.Split(';')[2]));
         }
     }
 }
