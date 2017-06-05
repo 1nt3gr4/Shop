@@ -6,34 +6,29 @@ using System.Threading.Tasks;
 
 namespace ShopsDataProcessing
 {
-    public class Shop
+    public interface IProcess
     {
-        public int ShopCode { get; set; }
-        public string Name { get; set; }
-        public string Address { get; set; }
+        void Process();
     }
 
-    public class Price
+    class Processing : IProcess
     {
-        public int ShopCode { get; set; }
-        public int GoodCode { get; set; }
-        public int GoodPrice { get; set; }
-        public int Discount { get; set; }
-    }
+        private IReader _reader;
 
-    public class Good
-    {
-        public int GoodCode { get; set; }
-        public string GoodName { get; set; }
-        public string Category { get; set; }
-    }
+        public void Process()
+        {
+            _reader = new Reader();
+            _reader.Read("shops.txt", "prices.txt", "goods.txt");
 
-    class Processing
-    {
-        public List<Shop> Shops { get; set; }
-        public List<Price> Prices { get; set; }
-        public List<Good> Goods { get; set; }
-
-
+            var cheap = _reader.Goods.Join(_reader.Prices, x => x.GoodCode, y => y.GoodCode, (x, y) =>
+            new { Name = x.GoodName, PriceWithDiscount = y.GoodPrice * ((y.Discount / 100.0)), ShopCode = y.ShopCode }).Join(_reader.Shops,
+            x => x.ShopCode, y => y.ShopCode, (x, y) => new
+            {
+                ProductName = x.Name,
+                PriceWithDiscount = x.PriceWithDiscount,
+                ShopName = y.Name,
+                ShopAddress = y.Address
+            });
+        }
     }
 }
